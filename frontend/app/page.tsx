@@ -9,7 +9,7 @@ export default function Home() {
       <div className="mx-auto max-w-7xl px-6 py-8">
         <header className="mb-8 flex items-center justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-amber">PageTale</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-amber">WiseVoice</p>
             <h1 className="mt-2 text-4xl font-bold">AI Book to Audiobook Studio</h1>
           </div>
           <div className="rounded-full border border-white/10 bg-obsidian px-4 py-2 text-sm text-white/80">

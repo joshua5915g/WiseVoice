@@ -1,6 +1,6 @@
-# PageTale
+# WiseVoice
 
-PageTale is an AI-powered PDF-to-audiobook generator that extracts book content, identifies narrator vs. character dialogue, and synthesizes multi-voice audiobook chapters.
+WiseVoice is an AI-powered PDF-to-audiobook generator that extracts book content, identifies narrator vs. character dialogue, and synthesizes multi-voice audiobook chapters.
 
 ## Stack
 
