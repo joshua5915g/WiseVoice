@@ -1,25 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.api import pdf, tts
 
-from api.routes.upload import router as upload_router
-from api.routes.dialogue import router as dialogue_router
-from api.routes.audio import router as audio_router
-
-app = FastAPI(title='PageTale API', version='0.1.0')
+app = FastAPI(title='WiseVoice API')
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=['http://localhost:3000', '*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
 )
 
-app.include_router(upload_router, prefix='/api')
-app.include_router(dialogue_router, prefix='/api')
-app.include_router(audio_router, prefix='/api')
+app.include_router(pdf.router, prefix='/api/pdf', tags=['PDF'])
+app.include_router(tts.router, prefix='/api/tts', tags=['TTS'])
 
 
-@app.get('/health')
-def health_check() -> dict:
-    return {'status': 'ok', 'service': 'pagetale-backend'}
+@app.get('/')
+def root():
+    return {'status': 'WiseVoice Backend Running'}

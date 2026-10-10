@@ -1,49 +1,42 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export interface Chunk {
+  id: number;
+  text: string;
+}
 
-export async function uploadPdf(file: File) {
+export interface ParseResponse {
+  total_pages: number;
+  total_chunks: number;
+  chunks: Chunk[];
+}
+
+const API_BASE_URL = 'http://localhost:8000';
+
+export async function parsePdf(file: File): Promise<ParseResponse> {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(`${API_BASE_URL}/api/upload-pdf`, {
+  const response = await fetch(`${API_BASE_URL}/api/pdf/parse`, {
     method: 'POST',
-    body: formData
+    body: formData,
   });
 
   if (!response.ok) {
-    throw new Error('PDF upload failed');
+    throw new Error(`PDF upload failed with status ${response.status}`);
   }
 
-  return response.json();
+  return await response.json();
 }
 
-export async function parseDialogue(chapterId: string) {
-  const response = await fetch(`${API_BASE_URL}/api/parse-dialogue`, {
+export async function generateAudioBlob(text: string, voice: string, rate: string = '+0%'): Promise<Blob> {
+  const response = await fetch(`${API_BASE_URL}/api/tts/generate`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ chapter_id: chapterId })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, voice, rate }),
   });
 
   if (!response.ok) {
-    throw new Error('Dialogue parsing failed');
+    throw new Error(`Audio generation failed with status ${response.status}`);
   }
 
-  return response.json();
-}
-
-export async function generateAudio(chapterId: string) {
-  const response = await fetch(`${API_BASE_URL}/api/generate-audio`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ chapter_id: chapterId })
-  });
-
-  if (!response.ok) {
-    throw new Error('Audio generation failed');
-  }
-
-  return response.json();
+  return await response.blob();
 }
